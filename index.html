@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Shopping Cart Test</title>
+</head>
+
+<body>
+    <h1>Shopping Cart System</h1>
+    <script>
+        //Product Class
+        class Product {
+            constructor (id, name, price) {
+                this.id = id;
+                this.name = name;
+                this.price = price;
+            }
+        }
+
+        //ShoppingCartItem Class
+        class ShoppingCartItem {
+            constructor (product, quantity) {
+                this.product = product;
+                this.quantity = quantity;
+            }
+
+            // Method to calculate the total price of this item
+            calculateTotalPrice() {
+                return this.product.price * this.quantity;
+            }
+        }
+
+        //ShoppingCart Class
+        class ShoppingCart {
+            constructor () {
+                this.items = [];
+            }
+
+            // Method to get the total number of items in the cart
+            getTotalItems() {
+                return this.items.length;
+            }
+
+            // Method to add an item to the cart
+            addItem(product, quantity) {
+                const cartItem = new ShoppingCartItem(product, quantity);
+                this.items.push(cartItem);
+            }
+
+            // Method to remove an item from the cart by product id
+            removeItem(productId) {
+                this.items = this.items.filter(item => item.product.id !== productId);
+            }
+
+            // Method to display all items in the cart
+            displayCart() {
+                if (this.items.length === 0) {
+                    console.log('The cart is empty.');
+                } else {
+                    console.log('Items in your cart:');
+                    this.items.forEach(item => {
+                        console.log(`Product: ${item.product.name}, Quantity: ${item.quantity}, Total Price: ${item.calculateTotalPrice()}`);
+                    });
+                }
+            }
+
+            // Method to calculate the total cost of all items in the cart
+            calculateTotalCartPrice() {
+                return this.items.reduce((total, item) => total + item.calculateTotalPrice(), 0);
+            }
+        }
+
+        //Testing the Shopping Cart System
+
+        //Creating products
+        const product1 = new Product(1, 'Laptop', 1000);
+        const product2 = new Product(2, 'Phone', 500);
+        const product3 = new Product(3, 'Headphones', 100);
+
+        // Creating a shopping cart
+        const cart = new ShoppingCart();
+
+        // Adding items to the cart
+        cart.addItem(product1, 2); // Add 2 laptops
+        cart.addItem(product2, 1); // Add 1 phone
+        cart.addItem(product3, 3); // Add 3 headphones
+
+        // Displaying the cart
+        cart.displayCart();
+        console.log(`Total cart price: $${cart.calculateTotalCartPrice()}`);
+
+        // Removing an item from the cart (remove the phone)
+        cart.removeItem(2);
+
+        // Displaying the cart again after removal
+        cart.displayCart();
+        console.log(`Total cart price after removal: $${cart.calculateTotalCartPrice()}`);
+    </script>
+</body>
+</html>
